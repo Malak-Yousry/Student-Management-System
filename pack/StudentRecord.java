@@ -9,6 +9,14 @@ public class StudentRecord{
  private float gpa;
 
 
+public StudentRecord(int studentID, String fullName, int age, String gender, String departement, float gpa) {
+	this.studentID = studentID;
+	this.fullName = fullName;
+	this.age = age;
+	this.gender = gender;
+	this.departement = departement;
+	this.gpa = gpa;
+}
 public String generateID() {
 	 return String.format("%04d",(System.currentTimeMillis()%1000));
 }
