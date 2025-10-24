@@ -6,11 +6,13 @@ import java.util.Scanner;
 import javax.xml.crypto.Data;
 
 public class Database {
-    ArrayList<StudentRecord> students;
+   private ArrayList<StudentRecord> students;
 
-    public Database(){
+   //constructor 
+   public Database(){
         students = new ArrayList<>();
     }
+   //search methods
     public StudentRecord searchStudent(String name){
         for(int i = 0; i < students.size(); i++)
             if(students.get(i).getFullName().equals(name))
@@ -24,6 +26,7 @@ public class Database {
                 return students.get(i);
         return null;
     }
+    //update method
     public boolean updateStudents(int id){
         StudentRecord student = searchStudent(id);
         if(student != null){//student found
@@ -60,9 +63,9 @@ public class Database {
         }
         return false;     
     }
-
+//read from file
     public ArrayList<StudentRecord> readFromFile() {
-     ArrayList<StudentRecord> records=new ArrayList<>();
+     students = new ArrayList<>();
      try(Scanner read = new Scanner(new File(filename))){	
 	 while(read.hasNextLine()) {
 	 String info = read.nextLine().trim();
@@ -86,7 +89,7 @@ public class Database {
 			}
             return records;
      }
-     
+    // view method
      public void viewAllStudents(){
     ArrayList<StudentRecord> records=readFromFile();
     for(StudentRecord e : records){
@@ -94,8 +97,9 @@ public class Database {
     }
 
     }
-    public ArrayList<StudentRecord> sortById(){
-    ArrayList<StudentRecord> records=readFromFile();
+     // sorting methods
+    public void sortById(){
+     students=readFromFile();
     for(int i = 0;i<records.size();i++){
        int index=i;
        for(int j=i+1;j<records.size();j++) {
@@ -107,10 +111,9 @@ public class Database {
 	records.set(i,records.get(index));
 	records.set(index,temp);
 			}}
-    return records;
     }
-    public ArrayList<StudentRecord> sortByName(){
-    ArrayList<StudentRecord> records=readFromFile();
+    public void sortByName(){
+     students=readFromFile();
     for(int i = 0;i<records.size();i++){
        int index=i;
        for(int j=i+1;j<records.size();j++) {
@@ -123,6 +126,43 @@ public class Database {
 	records.set(index,temp);
 		}
      }
-    return records;
      }
+    // delete methods
+    public boolean deleteStudentById(String studentId, boolean confirmDeletion) {
+        List<String> students = new ArrayList<>();
+        boolean found = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith(studentId + ",")) {
+                    found = true;
+                    if (!confirmDeletion) {
+                        students.add(line); 
+                    }
+                    continue; 
+                }
+                students.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        if (!found) {
+            return false; 
+        }
+
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+            for (String s : students) {
+                bw.write(s);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            return false;
+        }
+
+        return confirmDeletion;
+    }
     }
