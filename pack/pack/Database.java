@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.xml.crypto.Data;
 
-public class Database {
+public class Database extends Validations {
    private ArrayList<StudentRecord> records;
-   String fileName;
+   private final String FILE_NAME="students.txt";
 
    //constructor 
    public Database(){
@@ -24,7 +23,7 @@ public class Database {
    //search methods
     public StudentRecord searchStudent(String name){
         for(int i = 0; i < records.size(); i++)
-            if(records.get(i).getFullName().equals(name))
+            if(records.get(i).getFullName().equalsIgnoreCase(name))
                 return records.get(i);
         return null;
     }
@@ -68,6 +67,7 @@ public class Database {
                     System.out.println("invalid choice.");
                     break;
             }
+            saveToFile();
             return true;
         }
         return false;     
@@ -75,7 +75,7 @@ public class Database {
 //read from file
     public ArrayList<StudentRecord> readFromFile() {
      records = new ArrayList<>();
-     try(Scanner read = new Scanner(new File(fileName))){	
+     try(Scanner read = new Scanner(new File(FILE_NAME))){	
 	 while(read.hasNextLine()) {
 	 String info = read.nextLine().trim();
 	 if(info.isEmpty())continue;
@@ -101,7 +101,7 @@ public class Database {
     //save to file
     public void saveToFile() {
 		 
-		try(FileWriter writer = new FileWriter(new File(fileName))){
+		try(FileWriter writer = new FileWriter(new File(FILE_NAME))){
 			for(int i = 0; i < records.size(); i++) {
 			writer.write(records.get(i).lineRepresentation() + "\n");
 		    }
@@ -112,9 +112,13 @@ public class Database {
 	}
     // view method
     public void viewAllrecords(){
-        ArrayList<StudentRecord> records=readFromFile();
-        for(StudentRecord e : records){
-            System.out.println(e);
+        ArrayList<StudentRecord> list=readFromFile();
+        if(list.isEmpty()) {
+        	System.out.println("No records found!");
+        	return;
+        }
+        for(StudentRecord e : list){
+            System.out.println(e.lineRepresentation());
         }
     }
      // sorting methods
@@ -132,6 +136,7 @@ public class Database {
                 records.set(index,temp);
             }
         }
+        saveToFile();
     }
     public void sortByName(){
      records=readFromFile();
@@ -147,13 +152,14 @@ public class Database {
 	records.set(index,temp);
 		}
      }
+    saveToFile();
      }
     // delete methods
     public boolean deleteStudentById(String studentId, boolean confirmDeletion) {
         List<String> records = new ArrayList<>();
         boolean found = false;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.startsWith(studentId + ",")) {
@@ -175,7 +181,7 @@ public class Database {
         }
 
 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (String s : records) {
                 bw.write(s);
                 bw.newLine();
@@ -187,23 +193,47 @@ public class Database {
         return confirmDeletion;
     }
 // add records method
-	 public void addStudent(String fullName,int studentID,int age,String gender,String departement,float gpa){
-	    StudentRecord student = new   StudentRecord (studentID,fullName,age,gender,departement,gpa);
-		   student.setStudentID(generateID());
-		   student.setFullName(fullName);
-		   student.setAge(age);
-		   student.setGender(gender);
-		   student.setDepartement(departement); 
-		   student.setGpa(gpa);
-		   records.add(student);
+	 public void addStudent(String fullName,int age,String gender,String departement,float gpa){
+	    records=readFromFile();
+		  if(!validateFullName(fullName)) {
+			  System.out.println("Please Enter Your FullName!!");
+			return;  
+		  }
+		 
+		  if(!validateAge(age)) {
+			  System.out.println("Invalid Age!!");
+			  return;
+		  }
+		  
+		  if(!validateGender(gender)) {
+			  System.out.println("Invalid gender!!");
+			  return;
+		  }
+		
+		  if(!validateGpa(gpa)) {
+			  System.out.println("Invalid gpa!!");
+			  return;
+		  }
+	
+		  if((searchStudent(fullName)) != null) {
+			  System.out.println("Student already exists!");
+			  return;
+			  }
+		 int studentID= generateID();
+			 StudentRecord student = new   StudentRecord (studentID,fullName,age,gender,departement,gpa);
+		 
+	       records.add(student);
 		   saveToFile();
+		   
+		   }
+		  
 
-		 }
 	 public int generateID() {
-		 int id =  Integer.parseInt(String.format("%04d",(System.currentTimeMillis()%1000)));
-		 while(searchStudent(id) != null) {
-			 id =  Integer.parseInt(String.format("%04d",(System.currentTimeMillis()%1000)));
-		 }
+		 int id ;
+		 do{ 
+			 id = (int)((Math.random()*9000)+1000);
+	 }while(searchStudent(id) != null) ;
+			
 		 return id;
 	}
 	 

@@ -8,7 +8,7 @@ public class StudentRecord{
  private String departement;
  private float gpa;
 
-
+public StudentRecord(){}
 public StudentRecord(int studentID, String fullName, int age, String gender, String departement, float gpa) {
 	this.studentID = studentID;
 	this.fullName = fullName;
@@ -17,9 +17,7 @@ public StudentRecord(int studentID, String fullName, int age, String gender, Str
 	this.departement = departement;
 	this.gpa = gpa;
 }
-public String generateID() {
-	 return String.format("%04d",(System.currentTimeMillis()%1000));
-}
+
  public int getStudentID() {
 	return studentID;
  }
@@ -33,17 +31,7 @@ public String generateID() {
  }
 
  public void setFullName(String fullName) {
-     if(fullName == null){
-         System.out.println("Please Enter Your FullName!!");
-         return;
-        }
-         else {
-             String[] name = fullName.trim().split(" ");
-             if(name.length < 5){
-              System.out.println("Please Enter Your FullName!!");
-              return;
-             }
-         }
+
 	this.fullName = fullName;
  }
 
@@ -52,9 +40,7 @@ public String generateID() {
  }
 
  public void setAge(int age) {
-     if(age <= 0){
-     System.out.println("Invalid Age!!");
-     return;}
+
 	this.age = age;
  }
 
@@ -63,9 +49,6 @@ public String generateID() {
  }
 
  public void setGender(String gender) {
-     if(!gender.equalsIgnoreCase("male") && !gender.equalsIgnoreCase("female")){
-     System.out.println("Invalid gender!!");
-     return;}
 	this.gender = gender;
  }
 
@@ -82,13 +65,10 @@ public String generateID() {
  }
 
  public void setGpa(float gpa) {
-     if(gpa<0 || gpa>4){
-    System.out.println("Invalid gpa!!");
-    return;}
 	this.gpa = gpa;
  }
- 	public String lineRepresentation() {
-		 return getStudentID() + "," + getFullName() + "," + getGender() + "," + getDepartement() + "," +  getGpa();
+ public String lineRepresentation() {
+		 return getStudentID() + "," + getFullName() + "," +getAge() + ","+ getGender() + "," + getDepartement() + "," +  getGpa();
 	 }
 
 }
