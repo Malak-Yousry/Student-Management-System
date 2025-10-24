@@ -1,8 +1,6 @@
 package pack;
 
 import java.io.BufferedReader;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -113,25 +111,16 @@ public class Database extends Validations {
 		}
 	}
     // view method
-    public void viewAllrecords(DefaultTableModel model){
+    public void viewAllrecords(){
         ArrayList<StudentRecord> list=readFromFile();
-     // clear any old data in table
-        model.setRowCount(0);
         if(list.isEmpty()) {
+        	System.out.println("No records found!");
         	return;
         }
         for(StudentRecord e : list){
-            Object[]  row= {
-            e.getStudentID(),
-            e.getFullName(),
-            e.getAge(),
-            e.getGender(),
-            e.getDepartement(),
-            e.getGpa()};
-           model.addRow(row);
-            }
+            System.out.println(e.lineRepresentation());
         }
-    
+    }
      // sorting methods
     public void sortById(){
         records=readFromFile();
