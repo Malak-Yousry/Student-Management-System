@@ -179,9 +179,9 @@ public class Database {
         return confirmDeletion;
     }
 // add students method
-	 public void addStudent(int studentID,String fullName,int age,String gender,String departement,float gpa){
+	 public void addStudent(String fullName,int age,String gender,String departement,float gpa){
 	    StudentRecord student = new   StudentRecord (studentID,fullName,age,gender,departement,gpa);
-		   setStudentID(studentID);
+		   setStudentID(generateID());
 		   setFullName(fullName);
 		   setAge(age);
 		   setGender(gender);
@@ -191,6 +191,14 @@ public class Database {
 		   saveToFile();
 
 		 }
+	 public int generateID() {
+		 int id =  Integer.parseInt(format("%04d",(System.currentTimeMillis()%1000)));
+		 while(searchStudent(id) != null) {
+			 id =  Integer.parseInt(format("%04d",(System.currentTimeMillis()%1000)));
+		 }
+		 return id;
+	}
+	 
 
 	 public String lineRepresentation() {
 		 return getStudentID() + "," + getFullName() + "," + getGender() + "," + getDepartement() + "," +  getGpa();
