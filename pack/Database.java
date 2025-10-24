@@ -1,33 +1,42 @@
 package pack;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.xml.crypto.Data;
 
 public class Database {
-   private ArrayList<StudentRecord> students;
+   private ArrayList<StudentRecord> records;
+   String fileName;
 
    //constructor 
    public Database(){
-        students = new ArrayList<>();
+        records = new ArrayList<>();
     }
    //search methods
     public StudentRecord searchStudent(String name){
-        for(int i = 0; i < students.size(); i++)
-            if(students.get(i).getFullName().equals(name))
-                return students.get(i);
+        for(int i = 0; i < records.size(); i++)
+            if(records.get(i).getFullName().equals(name))
+                return records.get(i);
         return null;
     }
     //overload
     public StudentRecord searchStudent(int id){
-        for(int i = 0; i < students.size(); i++)
-            if(students.get(i).getStudentID() == id)
-                return students.get(i);
+        for(int i = 0; i < records.size(); i++)
+            if(records.get(i).getStudentID() == id)
+                return records.get(i);
         return null;
     }
     //update method
-    public boolean updateStudents(int id){
+    public boolean updaterecords(int id){
         StudentRecord student = searchStudent(id);
         if(student != null){//student found
             //menu
@@ -65,8 +74,8 @@ public class Database {
     }
 //read from file
     public ArrayList<StudentRecord> readFromFile() {
-     students = new ArrayList<>();
-     try(Scanner read = new Scanner(new File(filename))){	
+     records = new ArrayList<>();
+     try(Scanner read = new Scanner(new File(fileName))){	
 	 while(read.hasNextLine()) {
 	 String info = read.nextLine().trim();
 	 if(info.isEmpty())continue;
@@ -92,45 +101,44 @@ public class Database {
     //save to file
     public void saveToFile() {
 		 
-		try(FileWriter writer = new FileWriter(new File(filename))){
-			for(StudentRecord s :students) {
-			writer.write(student.get(i).lineRepresentation() + "\n");
-			
-		}}
-		catch(IOException e) {
+		try(FileWriter writer = new FileWriter(new File(fileName))){
+			for(int i = 0; i < records.size(); i++) {
+			writer.write(records.get(i).lineRepresentation() + "\n");
+		    }
+        }catch(IOException e) {
 			System.out.println("An error occurred");
 			e.printStackTrace();
 		}
 	}
     // view method
-     public void viewAllStudents(){
-    ArrayList<StudentRecord> records=readFromFile();
-    for(StudentRecord e : records){
-        System.out.println(e);
-    }
-
+    public void viewAllrecords(){
+        ArrayList<StudentRecord> records=readFromFile();
+        for(StudentRecord e : records){
+            System.out.println(e);
+        }
     }
      // sorting methods
     public void sortById(){
-     students=readFromFile();
-    for(int i = 0;i<records.size();i++){
-       int index=i;
-       for(int j=i+1;j<records.size();j++) {
-        if(records.get(j).getID()<records.get(index).getID())
-        index=j;
-    }
-    if(index!=i) {
-	StudentRecord temp = records.get(i);
-	records.set(i,records.get(index));
-	records.set(index,temp);
-			}}
+        records=readFromFile();
+        for(int i = 0;i<records.size();i++){
+            int index=i;
+            for(int j=i+1;j<records.size();j++) {
+                if(records.get(j).getStudentID()<records.get(index).getStudentID())
+                index=j;
+            }
+            if(index!=i) {
+                StudentRecord temp = records.get(i);
+                records.set(i,records.get(index));
+                records.set(index,temp);
+            }
+        }
     }
     public void sortByName(){
-     students=readFromFile();
+     records=readFromFile();
     for(int i = 0;i<records.size();i++){
        int index=i;
        for(int j=i+1;j<records.size();j++) {
-        if(records.get(j).getName().compareToIgnoreCase(records.get(index).getName()<0))
+        if(records.get(j).getFullName().compareToIgnoreCase(records.get(index).getFullName()) < 0)
         index=j;
           }
     if(index!=i) {
@@ -142,7 +150,7 @@ public class Database {
      }
     // delete methods
     public boolean deleteStudentById(String studentId, boolean confirmDeletion) {
-        List<String> students = new ArrayList<>();
+        List<String> records = new ArrayList<>();
         boolean found = false;
 
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
@@ -151,11 +159,11 @@ public class Database {
                 if (line.startsWith(studentId + ",")) {
                     found = true;
                     if (!confirmDeletion) {
-                        students.add(line); 
+                        records.add(line); 
                     }
                     continue; 
                 }
-                students.add(line);
+                records.add(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -168,7 +176,7 @@ public class Database {
 
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
-            for (String s : students) {
+            for (String s : records) {
                 bw.write(s);
                 bw.newLine();
             }
@@ -178,29 +186,26 @@ public class Database {
 
         return confirmDeletion;
     }
-// add students method
-	 public void addStudent(String fullName,int age,String gender,String departement,float gpa){
+// add records method
+	 public void addStudent(String fullName,int studentID,int age,String gender,String departement,float gpa){
 	    StudentRecord student = new   StudentRecord (studentID,fullName,age,gender,departement,gpa);
-		   setStudentID(generateID());
-		   setFullName(fullName);
-		   setAge(age);
-		   setGender(gender);
-		   setDepartement(departement); 
-		   setGpa(gpa);
-		   students.add(student);
+		   student.setStudentID(generateID());
+		   student.setFullName(fullName);
+		   student.setAge(age);
+		   student.setGender(gender);
+		   student.setDepartement(departement); 
+		   student.setGpa(gpa);
+		   records.add(student);
 		   saveToFile();
 
 		 }
 	 public int generateID() {
-		 int id =  Integer.parseInt(format("%04d",(System.currentTimeMillis()%1000)));
+		 int id =  Integer.parseInt(String.format("%04d",(System.currentTimeMillis()%1000)));
 		 while(searchStudent(id) != null) {
-			 id =  Integer.parseInt(format("%04d",(System.currentTimeMillis()%1000)));
+			 id =  Integer.parseInt(String.format("%04d",(System.currentTimeMillis()%1000)));
 		 }
 		 return id;
 	}
 	 
 
-	 public String lineRepresentation() {
-		 return getStudentID() + "," + getFullName() + "," + getGender() + "," + getDepartement() + "," +  getGpa();
-	 }
     }

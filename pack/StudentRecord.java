@@ -87,6 +87,8 @@ public String generateID() {
     return;}
 	this.gpa = gpa;
  }
- 
+ 	public String lineRepresentation() {
+		 return getStudentID() + "," + getFullName() + "," + getGender() + "," + getDepartement() + "," +  getGpa();
+	 }
 
 }
