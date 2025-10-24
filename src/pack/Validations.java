@@ -8,7 +8,7 @@ public class Validations {
 	        }
 	         else {
 	             String[] name = fullName.trim().split(" ");
-	             if(name.length < 5)
+	             if(name.length < 3)
 	              return false;
 	         }
 	     return true;
