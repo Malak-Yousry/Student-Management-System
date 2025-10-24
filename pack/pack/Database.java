@@ -231,7 +231,7 @@ public class Database extends Validations {
 	 public int generateID() {
 		 int id ;
 		 do{ 
-			 id = (int)((Math.random()*9000)+1000);
+			 id = (int)((Math.random()*9000)+10000);
 	 }while(searchStudent(id) != null) ;
 			
 		 return id;
