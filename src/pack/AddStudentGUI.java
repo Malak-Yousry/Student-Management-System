@@ -20,7 +20,7 @@ public class AddStudentGUI extends JPanel {
 	public AddStudentGUI() {
 		setBackground(SystemColor.controlHighlight);
 		setLayout(new BorderLayout(20,20));
-		//setBackground(new Color(240,240,240));
+		
 		
 		JLabel lblTitle = new JLabel("Add New Student",SwingConstants.CENTER);
 		lblTitle.setFont(new Font("Verdana", Font.PLAIN, 35));
@@ -36,7 +36,6 @@ public class AddStudentGUI extends JPanel {
 		label.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		panel.add(label);
 		txtStudentFullName = new JTextField(15);
-		txtStudentFullName.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtStudentFullName.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtStudentFullName.setBackground(SystemColor.inactiveCaption);
 		panel.add(txtStudentFullName);

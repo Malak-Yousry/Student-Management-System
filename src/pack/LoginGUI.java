@@ -1,3 +1,4 @@
+
 package pack;
 
 import java.awt.BorderLayout;
@@ -48,15 +49,14 @@ public class LoginGUI extends JPanel {
 		label.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		panel.add(label);
 		txtUserName = new JTextField(15);
-		txtUserName.setHorizontalAlignment(SwingConstants.RIGHT);
 		txtUserName.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtUserName.setBackground(SystemColor.inactiveCaption);
 		panel.add(txtUserName);
 	
 		
-		JLabel label_4 = new JLabel("  GPA : ");
-		label_4.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		panel.add(label_4);
+		JLabel label_2 = new JLabel("  Password : ");
+		label_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		panel.add(label_2);
 		txtPassword = new JTextField(15);
 		txtPassword.setBackground(SystemColor.inactiveCaption);
 		txtPassword.setFont(new Font("Tahoma", Font.PLAIN, 12));
