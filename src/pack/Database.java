@@ -23,24 +23,27 @@ public class Database extends Validations {
         records = new ArrayList<>();
     }
    //search methods
-    public StudentRecord searchStudent(String name){
+    public ArrayList<StudentRecord> searchStudent(String name){
+        ArrayList<StudentRecord> result = new ArrayList<>();
         for(int i = 0; i < records.size(); i++)
             if(records.get(i).getFullName().equalsIgnoreCase(name))
-                return records.get(i);
-        return null;
+                result.add(records.get(i));
+        return result;
     }
     //overload
-    public StudentRecord searchStudent(int id){
+    public ArrayList<StudentRecord> searchStudent(int id){
+        ArrayList<StudentRecord> result = new ArrayList<>();
         for(int i = 0; i < records.size(); i++)
             if(records.get(i).getStudentID() == id)
-                return records.get(i);
-        return null;
+                result.add(records.get(i));
+        return result;
     }
     //update method
     public boolean updaterecords(int id){
-        StudentRecord student = searchStudent(id);
-        if(student != null){//student found
-            //menu
+        ArrayList<StudentRecord> student = searchStudent(id);
+        if(student.size() == 0)
+            return false;
+        for(int i = 0; i < student.size(); i++){
             Scanner scanner = new Scanner(System.in);
             System.out.println("Menu");
             System.out.println("1.Update department.");
@@ -52,17 +55,17 @@ public class Database extends Validations {
                 case 1:
                     System.out.println("Enter the department: ");
                     String dep = scanner.nextLine();
-                    student.setDepartement(dep);
+                    student.get(i).setDepartement(dep);
                     break;
                 case 2:
                     System.out.println("Enter the GPA: ");
                     float gpa = scanner.nextFloat();
-                    student.setGpa(gpa);
+                    student.get(i).setGpa(gpa);
                     break;
                 case 3:
                     System.out.println("Enter the age: ");
                     int age = scanner.nextInt();
-                    student.setAge(age);
+                    student.get(i).setAge(age);
                     break;
             
                 default:
@@ -70,9 +73,9 @@ public class Database extends Validations {
                     break;
             }
             saveToFile();
-            return true;
         }
-        return false;     
+        return true;    
+
     }
 //read from file
     public ArrayList<StudentRecord> readFromFile() {
