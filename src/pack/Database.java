@@ -116,8 +116,8 @@ public class Database extends Validations {
 		}
 	}
     // view method
-    public void viewAllrecords(DefaultTableModel model){
-        ArrayList<StudentRecord> list=readFromFile();
+    public void viewAllrecords(DefaultTableModel model, ArrayList<StudentRecord> record){
+        ArrayList<StudentRecord> list = record;
 
      // clear any old data in table
         model.setRowCount(0);
