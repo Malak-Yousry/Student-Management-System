@@ -130,10 +130,8 @@ public class Deletion extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Deletion().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Deletion().setVisible(true);
         });
     }
 
