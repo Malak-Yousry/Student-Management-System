@@ -18,11 +18,13 @@ public class ViewGUI extends JPanel {
 	private DefaultTableModel model;
 	private Database studentRecords;
 	private JTable table_1;
+	private boolean editable;
 
 	/**
 	 * Create the panel.
 	 */
-	public ViewGUI() {
+	public ViewGUI(boolean edit) {
+		editable = edit;
 		setLayout(new BorderLayout(0, 0));
 		
 		// column names
@@ -32,11 +34,11 @@ public class ViewGUI extends JPanel {
 		Class[] columnTypes = new Class[] {
 			Integer.class, String.class, Integer.class, String.class, String.class, Float.class
 					};
-		public Class<?> getcolumnClas(int columnIndex){
+		public Class<?> getColumnClas(int columnIndex){
 			return columnTypes[columnIndex];
 		}
-		public boolean iscellEditable(int row,int column) {
-			return false;
+		public boolean isCellEditable(int row,int column) {
+			return editable;
 		}
 		};
 		// create table
