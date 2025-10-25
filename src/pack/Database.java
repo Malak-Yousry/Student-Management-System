@@ -1,6 +1,8 @@
 package pack;
 
 import java.io.BufferedReader;
+
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.io.BufferedWriter;
@@ -117,14 +119,12 @@ public class Database extends Validations {
 	}
     // view method
     public void viewAllrecords(DefaultTableModel model, ArrayList<StudentRecord> record){
-        ArrayList<StudentRecord> list = record;
-
      // clear any old data in table
         model.setRowCount(0);
-        if(list.isEmpty()) {
+        if(record.isEmpty()) {
         	return;
         }
-        for(StudentRecord e : list){
+        for(StudentRecord e : record){
             Object[]  row= {
             e.getStudentID(),
             e.getFullName(),
@@ -211,27 +211,22 @@ public class Database extends Validations {
 	 public void addStudent(String fullName,int age,String gender,String departement,float gpa){
 	    records=readFromFile();
 		  if(!validateFullName(fullName)) {
-			  System.out.println("Please Enter Your FullName!!");
+			  JOptionPane.showMessageDialog(null,"Please Enter Your FullName!!");
 			return;  
 		  }
 		 
 		  if(!validateAge(age)) {
-			  System.out.println("Invalid Age!!");
+			  JOptionPane.showMessageDialog(null,"Invalid Age!!");
 			  return;
 		  }
 		  
-		  if(!validateGender(gender)) {
-			  System.out.println("Invalid gender!!");
-			  return;
-		  }
-		
 		  if(!validateGpa(gpa)) {
-			  System.out.println("Invalid gpa!!");
+			  JOptionPane.showMessageDialog(null,"Invalid gpa!!");
 			  return;
 		  }
 	
 		  if((searchStudent(fullName)) != null) {
-			  System.out.println("Student already exists!");
+			  JOptionPane.showMessageDialog(null,"Student already exists!");
 			  return;
 			  }
 		 int studentID= generateID();
@@ -246,7 +241,7 @@ public class Database extends Validations {
 	 public int generateID() {
 		 int id ;
 		 do{ 
-			 id = (int)((Math.random()*9000)+10000);
+			 id = (int)((Math.random()*9000)+1000);
 	 }while(searchStudent(id) != null) ;
 			
 		 return id;
