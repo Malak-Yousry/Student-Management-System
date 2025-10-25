@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class SearchGUI{
+public class SearchGUI extends JPanel{
 
     public SearchGUI(){
         JFrame searchFrame = new JFrame();
@@ -39,12 +40,26 @@ public class SearchGUI{
                 if(valid.validateFullName(userInput)){
                     record = database.searchStudent(userInput);
                     ViewGUI viewTable = new ViewGUI(record, false);
+                    JFrame resultFrame = new JFrame("Search Results");
+                    resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    resultFrame.setSize(800, 400);
+                    resultFrame.setLocationRelativeTo(null);
+                    resultFrame.add(viewTable);
+                    resultFrame.setVisible(true);
                 }
                     
                 else if (userInput.matches("\\d+")){//else if(isNumber(userInput))    //
                     record = database.searchStudent(Integer.parseInt(userInput));
                     ViewGUI viewTable = new ViewGUI(record, false);
-                } 
+                    JFrame resultFrame = new JFrame("Search Results");
+                    resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    resultFrame.setSize(800, 400);
+                    resultFrame.setLocationRelativeTo(null);
+                    resultFrame.add(viewTable);
+                    resultFrame.setVisible(true);
+                }
+                else 
+                    JOptionPane.showMessageDialog(searchFrame, "No student found!");
                     
             }
         });
