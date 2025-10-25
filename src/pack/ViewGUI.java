@@ -7,6 +7,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import java.awt.SystemColor;
+import java.util.ArrayList;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -19,11 +20,12 @@ public class ViewGUI extends JPanel {
 	private Database studentRecords;
 	private JTable table_1;
 	private boolean editable;
-
+	private ArrayList<StudentRecord> records;
 	/**
 	 * Create the panel.
 	 */
-	public ViewGUI(boolean edit) {
+	public ViewGUI(ArrayList<StudentRecord> list,boolean edit) {
+		records = list;
 		editable = edit;
 		setLayout(new BorderLayout(0, 0));
 		
@@ -48,8 +50,8 @@ public class ViewGUI extends JPanel {
 		table.setCellSelectionEnabled(true);
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		// get students data
-		 studentRecords=new Database();
-		studentRecords.viewAllrecords(model);
+		studentRecords=new Database();
+		studentRecords.viewAllrecords(model,records);
 		
 		JLabel lblNewLabel = new JLabel("Students Records");
 		lblNewLabel.setBackground(SystemColor.inactiveCaptionBorder);
