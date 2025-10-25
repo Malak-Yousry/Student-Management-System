@@ -27,6 +27,7 @@ public class Database extends Validations {
    //search methods
     public ArrayList<StudentRecord> searchStudent(String name){
         ArrayList<StudentRecord> result = new ArrayList<>();
+        records = this.readFromFile();
         for(int i = 0; i < records.size(); i++)
             if(records.get(i).getFullName().equalsIgnoreCase(name))
                 result.add(records.get(i));
@@ -35,6 +36,7 @@ public class Database extends Validations {
     //overload
     public ArrayList<StudentRecord> searchStudent(int id){
         ArrayList<StudentRecord> result = new ArrayList<>();
+        records = this.readFromFile();
         for(int i = 0; i < records.size(); i++)
             if(records.get(i).getStudentID() == id)
                 result.add(records.get(i));
