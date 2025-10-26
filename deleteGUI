@@ -1,0 +1,81 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.io.*;
+
+public class deleteGUI extends JFrame {
+    private JTable table;
+    private DefaultTableModel model;
+    private JButton deleteButton;
+    private final String FILE_PATH = "students.txt";
+
+    public deleteGUI() {
+        initComponents();
+        loadStudentsFromFile();
+    }
+
+    private void initComponents() {
+        deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(evt -> deleteSelectedStudent());
+
+        model = new DefaultTableModel(
+                new Object[]{"Student ID", "Full Name", "Age", "Gender", "Department", "GPA"}, 0);
+        table = new JTable(model);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        add(scrollPane);
+        add(deleteButton);
+
+        setTitle("Delete Student");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();
+        setLocationRelativeTo(null);
+    }
+
+    private void loadStudentsFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(",");
+                model.addRow(data);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error loading file: " + e.getMessage());
+        }
+    }
+
+    private void deleteSelectedStudent() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a student to delete.");
+            return;
+        }
+
+        String studentId = table.getValueAt(selectedRow, 0).toString();
+        String studentName = table.getValueAt(selectedRow, 1).toString();
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to delete " + studentName + "?",
+                "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        model.removeRow(selectedRow);
+        saveStudentsToFile(); // update file after removing
+        JOptionPane.showMessageDialog(this, studentName + " has been deleted.");
+    }
+}
+private void saveStudentsToFile() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+        for (int i = 0; i < model.getRowCount(); i++) {
+            for (int j = 0; j < model.getColumnCount(); j++) {
+                writer.write(model.getValueAt(i, j).toString());
+                if (j < model.getColumnCount() - 1)
+                    writer.write(",");
+            }
+            writer.newLine();
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Error saving file: " + e.getMessage());
+    }
+}
+}
