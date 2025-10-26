@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 public class UpdateGUI extends JPanel{
@@ -24,6 +25,7 @@ public class UpdateGUI extends JPanel{
     private ViewGUI viewTable;
     private StudentRecord student;
     JButton updateButton;
+    boolean validrow;
 
     public UpdateGUI(){
 
@@ -109,56 +111,18 @@ public class UpdateGUI extends JPanel{
             JOptionPane.showMessageDialog(resultFrame, "No students found!");
         else{
             DefaultTableModel model = viewTable.getModel();
+            
+            model.addTableModelListener(e -> {
+                validrow = validRow(selectedRow, model);
+                updateButton.setEnabled(validrow);
+            });
+            
+            //updateButton.setEnabled(validrow);
 
-            /*try {
-            int id = Integer.parseInt(model.getValueAt(selectedRow, 0).toString().trim());
-            String name = model.getValueAt(selectedRow, 1).toString().trim();
-            int age = Integer.parseInt(model.getValueAt(selectedRow, 2).toString().trim());
-            String gender = model.getValueAt(selectedRow, 3).toString().trim();
-            String department = model.getValueAt(selectedRow, 4).toString().trim();
-            float gpa = Float.parseFloat(model.getValueAt(selectedRow, 5).toString().trim());
-
-            // Debug info
-            System.out.println("---- UPDATE DEBUG ----");
-            System.out.println("ID: " + id);
-            System.out.println("Name: " + name);
-            System.out.println("Age: " + age);
-            System.out.println("Gender: " + gender);
-            System.out.println("Dept: " + department);
-            System.out.println("GPA: " + gpa);
-
-            // Validation checks
-            if (!valid.validateFullName(name)) {
-                JOptionPane.showMessageDialog(resultFrame, "Invalid name!");
+            if(!validrow){
+                JOptionPane.showMessageDialog(resultFrame, "Can't update");
                 return;
             }
-            if (!valid.validateAge(age)) {
-                JOptionPane.showMessageDialog(resultFrame, "Invalid age!");
-                return;
-            }
-            if (!valid.validateGpa(gpa)) {
-                JOptionPane.showMessageDialog(resultFrame, "Invalid GPA!");
-                return;
-            }
-
-            student = new StudentRecord(id, name, age, gender, department, gpa);
-            boolean success = database.updaterecords(student);
-
-            if (success) {
-                JOptionPane.showMessageDialog(resultFrame, "Student updated successfully!");
-                resultFrame.dispose();
-                new UpdateGUI(); // reopen search window
-            } else {
-                JOptionPane.showMessageDialog(resultFrame, "Update failed — student not found in database!");
-            }
-
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(resultFrame, "Invalid number format in table!");
-            ex.printStackTrace();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(resultFrame, "Unexpected error: " + ex.getMessage());
-            ex.printStackTrace();
-        }*/
             int id = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
             String name = model.getValueAt(selectedRow, 1).toString();
             int age = Integer.parseInt(model.getValueAt(selectedRow, 2).toString());
@@ -166,30 +130,8 @@ public class UpdateGUI extends JPanel{
             String department = model.getValueAt(selectedRow, 4).toString();
             float gpa = Float.parseFloat(model.getValueAt(selectedRow, 5).toString());
 
-
-            System.out.println("---- UPDATE DEBUG ----");
-            System.out.println("ID: " + id);
-            System.out.println("Name: " + name);
-            System.out.println("Age: " + age);
-            System.out.println("Gender: " + gender);
-            System.out.println("Dept: " + department);
-            System.out.println("GPA: " + gpa);
-
-
-            // Validation checks
-            if (!valid.validateFullName(name)) {
-                JOptionPane.showMessageDialog(resultFrame, "Invalid name!");
-                return;
-            }
-            if (!valid.validateAge(age)) {
-                JOptionPane.showMessageDialog(resultFrame, "Invalid age!");
-                return;
-            }
-            if (!valid.validateGpa(gpa)) {
-                JOptionPane.showMessageDialog(resultFrame, "Invalid GPA!");
-                return;
-            }
-            else{
+            if(validrow){
+                updateButton.setEnabled(true);
                 student = new StudentRecord(id,name,age,gender,department,gpa);
                 boolean isUpdated = database.updaterecords(student);
                 if(isUpdated){
@@ -201,6 +143,61 @@ public class UpdateGUI extends JPanel{
             
             }
         }
+    }
+    
+    boolean validRow(int selectedRow, DefaultTableModel model){
+        boolean isValid = true;
+        Object name = model.getValueAt(selectedRow, 1);
+        String str = name.toString().trim();
+        if (str.isEmpty()) {
+            JOptionPane.showMessageDialog(resultFrame, "Name cell Empty!");
+            isValid = false;
+        }
+        Object gender = model.getValueAt(selectedRow, 3);
+        str = gender.toString().trim();
+        if(str.isEmpty()){
+            JOptionPane.showMessageDialog(resultFrame, "Gender cell Empty!");
+            isValid = false;
+        }
+        Object department = model.getValueAt(selectedRow, 4);
+        str = department.toString().trim();
+        if(str.isEmpty()){
+            JOptionPane.showMessageDialog(resultFrame, "Department cell Empty!");
+            isValid = false;
+        }
+        Object ageObject = model.getValueAt(selectedRow, 2);
+        if(ageObject == null){
+            JOptionPane.showMessageDialog(resultFrame, "Age cell Empty!");
+           isValid = false;
+        }
+        else{
+            str = ageObject.toString().trim();
+            try{
+                int age = Integer.parseInt(str);
+                if(!valid.validateAge(age))
+                    isValid = false;
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(resultFrame, "Not valid");
+                isValid = false;
+            }
+        }
+        Object gpaObject = model.getValueAt(selectedRow, 5);
+        if(gpaObject == null){
+            JOptionPane.showMessageDialog(resultFrame, "GPA cell Empty!");
+            isValid = false;
+        }
+        else{
+            str = gpaObject.toString().trim();
+            try{
+                float gpa = Float.parseFloat(str);
+                if(!valid.validateGpa(gpa))
+                    isValid = false;
+            }catch(NumberFormatException e){
+                JOptionPane.showMessageDialog(resultFrame, "Not valid");
+                isValid = false;
+            }
+        }
+        return isValid;
     }
 }
 
