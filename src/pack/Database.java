@@ -22,7 +22,7 @@ public class Database extends Validations {
 
    //constructor 
    public Database(){
-        records = new ArrayList<>();
+        records = readFromFile();
     }
    //search methods
     public ArrayList<StudentRecord> searchStudent(String name){
@@ -43,43 +43,15 @@ public class Database extends Validations {
         return result;
     }
     //update method
-    public boolean updaterecords(int id){
-        ArrayList<StudentRecord> student = searchStudent(id);
-        if(student.size() == 0)
-            return false;
-        for(int i = 0; i < student.size(); i++){
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Menu");
-            System.out.println("1.Update department.");
-            System.out.println("2.Update GPA.");
-            System.out.println("3.Update age.");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-            switch (choice) {
-                case 1:
-                    System.out.println("Enter the department: ");
-                    String dep = scanner.nextLine();
-                    student.get(i).setDepartement(dep);
-                    break;
-                case 2:
-                    System.out.println("Enter the GPA: ");
-                    float gpa = scanner.nextFloat();
-                    student.get(i).setGpa(gpa);
-                    break;
-                case 3:
-                    System.out.println("Enter the age: ");
-                    int age = scanner.nextInt();
-                    student.get(i).setAge(age);
-                    break;
-            
-                default:
-                    System.out.println("invalid choice.");
-                    break;
+    public boolean updaterecords(StudentRecord student){
+        for (int i = 0; i < records.size(); i++) {
+            if (records.get(i).getStudentID() == student.getStudentID()) {
+                records.set(i, student);
+                saveToFile(); // save updated list
+                return true;
             }
-            saveToFile();
         }
-        return true;    
-
+        return false;
     }
 //read from file
     public ArrayList<StudentRecord> readFromFile() {
