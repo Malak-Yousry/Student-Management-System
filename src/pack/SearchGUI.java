@@ -58,6 +58,8 @@ public class SearchGUI extends JPanel{
                     resultFrame.add(viewTable);
                     resultFrame.setVisible(true);
                 }
+                else if(userInput.length() == 0)
+                    JOptionPane.showMessageDialog(searchFrame, "Empty text!");
                 else 
                     JOptionPane.showMessageDialog(searchFrame, "No student found!");
                     
