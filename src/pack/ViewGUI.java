@@ -15,12 +15,13 @@ import javax.swing.SwingConstants;
 public class ViewGUI extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTable table;
+	//private JTable table;
 	private DefaultTableModel model;
 	private Database studentRecords;
 	private JTable table_1;
 	private boolean editable;
 	private ArrayList<StudentRecord> records;
+	private JTable table=new JTable(model);
 	/**
 	 * Create the panel.
 	 */
@@ -40,7 +41,9 @@ public class ViewGUI extends JPanel {
 			return columnTypes[columnIndex];
 		}
 		public boolean isCellEditable(int row,int column) {
-			return editable;
+			if(column != 0)
+				return editable;
+			return false;
 		}
 		};
 		// create table
@@ -59,8 +62,14 @@ public class ViewGUI extends JPanel {
 		lblNewLabel.setForeground(Color.BLACK);
 		lblNewLabel.setLabelFor(lblNewLabel);
 		add(lblNewLabel, BorderLayout.NORTH);
-	
+		
 
+	}
+	public int getSelectedRow(){
+		return table.getSelectedRow();
+	}
+	public DefaultTableModel getModel() {
+    	return model;
 	}
 
 }
