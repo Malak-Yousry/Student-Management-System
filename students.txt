@@ -1,0 +1,3 @@
+1,Malak Yousry,20,Female,CS,3.8
+2,Ali Ahmed,22,Male,IT,3.2
+3,Lina Saad,21,Female,IS,3.5
