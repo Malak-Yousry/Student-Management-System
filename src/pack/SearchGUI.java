@@ -49,6 +49,7 @@ public class SearchGUI extends JPanel{
                     return;
                 }
                 if(!record.isEmpty()) {
+                    searchFrame.dispose();
                     ViewGUI viewTable = new ViewGUI(record, false);
                     JFrame resultFrame = new JFrame("Search Results");
                     resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
