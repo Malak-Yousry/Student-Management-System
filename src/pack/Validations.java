@@ -8,8 +8,8 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 public class Validations {
-	String userName;
-	String password;
+	private String userName;
+	private String password;
 
 	public Validations() {
 	}
