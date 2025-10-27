@@ -3,15 +3,12 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
 public class SearchGUI extends JPanel{
 
     public SearchGUI(){
@@ -37,24 +34,21 @@ public class SearchGUI extends JPanel{
             public void actionPerformed(ActionEvent e){
                 String userInput = text.getText();
                 ArrayList<StudentRecord> record = new ArrayList<>();
-                if(valid.validateFullName(userInput)){
+                if(valid.validateFullName(userInput))
                     record = database.searchStudent(userInput);
-                    if(!record.isEmpty()) {
-                    ViewGUI viewTable = new ViewGUI(record, false);
-                    JFrame resultFrame = new JFrame("Search Results");
-                    resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                    resultFrame.setSize(800, 400);
-                    resultFrame.setLocationRelativeTo(null);
-                    resultFrame.add(viewTable);
-                    resultFrame.setVisible(true);
-                    }
-                    else
-                    	JOptionPane.showMessageDialog(searchFrame, "No student found!");
-                }
                     
-                else if (userInput.matches("\\d+")){//else if(isNumber(userInput))    //
+                else if (userInput.matches("\\d+"))       //else if(isNumber(userInput))    //
                     record = database.searchStudent(Integer.parseInt(userInput));
-                    if(!record.isEmpty()) {
+
+                else if(userInput.length() == 0){
+                    JOptionPane.showMessageDialog(searchFrame, "Empty text!");
+                    return;
+                }
+                else{
+                    JOptionPane.showMessageDialog(searchFrame, "No student found!");
+                    return;
+                }
+                if(!record.isEmpty()) {
                     ViewGUI viewTable = new ViewGUI(record, false);
                     JFrame resultFrame = new JFrame("Search Results");
                     resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -62,15 +56,10 @@ public class SearchGUI extends JPanel{
                     resultFrame.setLocationRelativeTo(null);
                     resultFrame.add(viewTable);
                     resultFrame.setVisible(true);
-                    }
-                    else
-                    	JOptionPane.showMessageDialog(searchFrame, "No student found!");
                 }
-                else if(userInput.length() == 0)
-                    JOptionPane.showMessageDialog(searchFrame, "Empty text!");
-                else 
+                else
                     JOptionPane.showMessageDialog(searchFrame, "No student found!");
-                    
+                 
             }
         });
         searchFrame.setVisible(true);
