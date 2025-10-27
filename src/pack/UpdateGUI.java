@@ -65,14 +65,17 @@ public class UpdateGUI extends JPanel{
             JOptionPane.showMessageDialog(searchFrame, "Empty text!", "Error", JOptionPane.ERROR_MESSAGE);
 
         else if(valid.validateFullName(userInput)){
+            viewTable = new ViewGUI(database.searchStudent(userInput), true);
             searchFrame.dispose();
             resultFrame.getContentPane().removeAll();
             resultFrame.setLayout(new BorderLayout());
-            viewTable = new ViewGUI(database.searchStudent(userInput), true);
             model = viewTable.getModel();
             model.addTableModelListener(e -> {
-                validrow = validRow(selectedRow, model);
-                updateButton.setEnabled(validrow);
+                selectedRow = viewTable.getSelectedRow();
+                if(selectedRow != -1){
+                    validrow = validRow(selectedRow, model);
+                    updateButton.setEnabled(validrow);
+                }
             });
             resultFrame.add(viewTable,BorderLayout.CENTER);
             updateButton.setVisible(true);
@@ -83,10 +86,10 @@ public class UpdateGUI extends JPanel{
         }
         
         else if (userInput.matches("\\d+")){
+            viewTable = new ViewGUI(database.searchStudent(Integer.parseInt(userInput)), true);
             searchFrame.dispose();
             resultFrame.getContentPane().removeAll();
             resultFrame.setLayout(new BorderLayout());
-            viewTable = new ViewGUI(database.searchStudent(Integer.parseInt(userInput)), true);
             model = viewTable.getModel();
             model.addTableModelListener(e -> {
                 selectedRow = viewTable.getSelectedRow();
