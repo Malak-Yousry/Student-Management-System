@@ -15,7 +15,7 @@ public class SearchGUI extends JPanel{
         JFrame searchFrame = new JFrame();
         searchFrame.setSize(400,400);
         searchFrame.setTitle("Search");
-        searchFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        searchFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         searchFrame.setLayout(new BorderLayout());
 
         JPanel searchPanel = new JPanel();
@@ -57,6 +57,7 @@ public class SearchGUI extends JPanel{
                     resultFrame.setLocationRelativeTo(null);
                     resultFrame.add(viewTable);
                     resultFrame.setVisible(true);
+                    
                 }
                 else
                     JOptionPane.showMessageDialog(searchFrame, "No student found!");

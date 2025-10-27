@@ -87,13 +87,6 @@ public class ViewGUI extends JPanel {
 		studentRecords.sortById();
 		studentRecords.viewAllrecords(model,records);
 		
-		JLabel lblNewLabel = new JLabel("Students Records");
-		lblNewLabel.setBackground(SystemColor.inactiveCaptionBorder);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel.setForeground(Color.BLACK);
-		lblNewLabel.setLabelFor(lblNewLabel);
-		add(lblNewLabel, BorderLayout.SOUTH);
-		
 
 	}
 	public int getSelectedRow(){

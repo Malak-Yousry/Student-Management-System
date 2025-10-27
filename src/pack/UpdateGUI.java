@@ -27,7 +27,7 @@ public class UpdateGUI extends JPanel{
 
         searchFrame.setTitle("Update student");
         searchFrame.setSize(400,400);
-        searchFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        searchFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         searchFrame.setLayout(new BorderLayout());
 
         JPanel searchPanel = new JPanel();
@@ -52,7 +52,7 @@ public class UpdateGUI extends JPanel{
                 update();
         }});
         
-        resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         resultFrame.setSize(800, 400);
         resultFrame.setLocationRelativeTo(null);
 
@@ -158,11 +158,19 @@ public class UpdateGUI extends JPanel{
             JOptionPane.showMessageDialog(resultFrame, "Gender cell Empty!", "Error", JOptionPane.ERROR_MESSAGE);
             isValid = false;
         }
+        if(!valid.validateGender(str)) {
+        	isValid = false;
+        	JOptionPane.showMessageDialog(resultFrame, "Invalid Gender", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         Object department = model.getValueAt(selectedRow, 4);
         str = department.toString().trim();
         if(str.isEmpty()){
             JOptionPane.showMessageDialog(resultFrame, "Department cell Empty!", "Error", JOptionPane.ERROR_MESSAGE);
             isValid = false;
+        }
+        if(!valid.validateDepartement(str)) {
+        	isValid = false;
+        	JOptionPane.showMessageDialog(resultFrame, "Invalid Deparement", "Error", JOptionPane.ERROR_MESSAGE);
         }
         Object ageObject = model.getValueAt(selectedRow, 2);
         if(ageObject == null){
@@ -173,8 +181,11 @@ public class UpdateGUI extends JPanel{
             str = ageObject.toString().trim();
             try{
                 int age = Integer.parseInt(str);
-                if(!valid.validateAge(age))
+                if(!valid.validateAge(age)) {
                     isValid = false;
+                    JOptionPane.showMessageDialog(resultFrame, " Invalid Age", "Error", JOptionPane.ERROR_MESSAGE);
+
+                    }
             }catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(resultFrame, "Not valid", "Error", JOptionPane.ERROR_MESSAGE);
                 isValid = false;
@@ -189,8 +200,11 @@ public class UpdateGUI extends JPanel{
             str = gpaObject.toString().trim();
             try{
                 float gpa = Float.parseFloat(str);
-                if(!valid.validateGpa(gpa))
+                if(!valid.validateGpa(gpa)) {
                     isValid = false;
+                    JOptionPane.showMessageDialog(resultFrame, "Invalid GPA", "Error", JOptionPane.ERROR_MESSAGE);
+}
+                
             }catch(NumberFormatException e){
                 JOptionPane.showMessageDialog(resultFrame, "Not valid", "Error", JOptionPane.ERROR_MESSAGE);
                 isValid = false;

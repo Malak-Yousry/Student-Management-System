@@ -45,6 +45,25 @@ public class Validations {
 	else
 		return true;
 	}
+	//validation for the departement
+	public boolean validateDepartement(String departement) {
+		if(departement.equalsIgnoreCase("Computer and Communication") || 
+				departement.equalsIgnoreCase("Mechatronics and Robotics") || 
+				departement.equalsIgnoreCase("Electromechanics") || 
+				departement.equalsIgnoreCase("Biomedical") || 
+				departement.equalsIgnoreCase("Architecture and Conctruction") || 
+				departement.equalsIgnoreCase("Oil and Petrochemicals") || 
+				departement.equalsIgnoreCase("Aerospace"))
+			return true;
+		else
+			return false;
+	}
+	public boolean validateGender(String gender) {
+		if(gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female"))
+			return true;
+		else 
+			return false;
+	}
 	//For user login information
 	public boolean validateUser(String userName,String password) {
 
