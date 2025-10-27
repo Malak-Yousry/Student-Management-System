@@ -1,16 +1,16 @@
 package pack;
-
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import java.awt.SystemColor;
 import java.util.ArrayList;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.SwingConstants;
 
 public class ViewGUI extends JPanel {
 
@@ -18,10 +18,10 @@ public class ViewGUI extends JPanel {
 	//private JTable table;
 	private DefaultTableModel model;
 	private Database studentRecords;
-	private JTable table_1;
 	private boolean editable;
 	private ArrayList<StudentRecord> records;
 	private JTable table=new JTable(model);
+	private JComboBox<String> sortChoice;
 	/**
 	 * Create the panel.
 	 */
@@ -51,9 +51,40 @@ public class ViewGUI extends JPanel {
 		table.setFillsViewportHeight(true);
 		table.setColumnSelectionAllowed(true);
 		table.setCellSelectionEnabled(true);
+
+		studentRecords = new Database();
+		if(list.size() > 1){
+			sortChoice = new JComboBox<>();
+			sortChoice.setBackground(SystemColor.inactiveCaption);
+			sortChoice.setFont(new Font("Tahoma", Font.PLAIN, 12));
+			sortChoice.setModel(new DefaultComboBoxModel(new String[] {"Sort by ID","Sort by GPA", "Sort by Name"}));
+			add(sortChoice, BorderLayout.NORTH);
+
+			studentRecords.sortById();
+			records = studentRecords.readFromFile();
+			studentRecords.viewAllrecords(model,records);
+
+			sortChoice.addActionListener(e -> {
+			String choice = (String)sortChoice.getSelectedItem();
+			if(choice.equals("Sort by ID")){
+				records = studentRecords.readFromFile();
+				studentRecords.sortById();
+			}
+			else if (choice.equals("Sort by GPA")){
+				records = studentRecords.readFromFile();
+				studentRecords.sortByGPA();
+			}
+			else{
+				records = studentRecords.readFromFile();
+				studentRecords.sortByName();
+			}
+			studentRecords.viewAllrecords(model,records);
+		});
+
+		}
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		// get students data
-		studentRecords=new Database();
+		studentRecords.sortById();
 		studentRecords.viewAllrecords(model,records);
 		
 		JLabel lblNewLabel = new JLabel("Students Records");
@@ -61,7 +92,7 @@ public class ViewGUI extends JPanel {
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel.setForeground(Color.BLACK);
 		lblNewLabel.setLabelFor(lblNewLabel);
-		add(lblNewLabel, BorderLayout.NORTH);
+		add(lblNewLabel, BorderLayout.SOUTH);
 		
 
 	}
