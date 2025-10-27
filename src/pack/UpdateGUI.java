@@ -1,17 +1,13 @@
 package pack;
 import java.awt.BorderLayout;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 public class UpdateGUI extends JPanel{
@@ -19,7 +15,6 @@ public class UpdateGUI extends JPanel{
     private JTextField text = new JTextField(15);
     private Validations valid = new Validations();
     private Database database = new Database();
-
     private JFrame resultFrame = new JFrame("Search Results");
     private int selectedRow;
     private ViewGUI viewTable;
@@ -43,9 +38,7 @@ public class UpdateGUI extends JPanel{
         searchPanel.add(submitButton);
         add(searchPanel, BorderLayout.NORTH);
         searchFrame.add(searchPanel);
-        searchFrame.setVisible(true);
-
-        
+        searchFrame.setVisible(true);        
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
@@ -53,7 +46,6 @@ public class UpdateGUI extends JPanel{
         }});
 
         updateButton = new JButton("Update");
-
         updateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
