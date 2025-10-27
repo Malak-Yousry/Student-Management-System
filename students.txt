@@ -1,3 +1,4 @@
-1,Malak Yousry,20,Female,CS,3.8
-2,Ali Ahmed,22,Male,IT,3.2
-3,Lina Saad,21,Female,IS,3.5
+9836,Malak Yousry Ahmed,20,Female,Electromechanics,4.0
+3695,Ali Ahmed Ali,22,Male,Biomedical,3.2
+3698,Lina Saad Mohamed,25,Female,computer and communication,3.5
+
