@@ -203,7 +203,7 @@ private void deleteSelectedStudent() {
             new DeleteGUIS().setVisible(true);
         });
     }*/
-   public static void main(String[] args) {
+   /* public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
         System.out.println("=== Starting DeleteGUIS Test ===");
         
@@ -266,7 +266,7 @@ private void debugInfo() {
     
     System.out.println("========================");
 }
-  
+  */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
