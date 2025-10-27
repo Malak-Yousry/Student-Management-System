@@ -26,6 +26,7 @@ public class UpdateGUI extends JPanel{
     private StudentRecord student;
     JButton updateButton;
     boolean validrow;
+    DefaultTableModel model;
 
     public UpdateGUI(){
 
@@ -69,13 +70,18 @@ public class UpdateGUI extends JPanel{
     private void search(){
         String userInput = text.getText();
         if(userInput.length() == 0)
-            JOptionPane.showMessageDialog(searchFrame, "Empty text!");
+            JOptionPane.showMessageDialog(searchFrame, "Empty text!", "Error", JOptionPane.ERROR_MESSAGE);
 
         else if(valid.validateFullName(userInput)){
             searchFrame.dispose();
             resultFrame.getContentPane().removeAll();
             resultFrame.setLayout(new BorderLayout());
             viewTable = new ViewGUI(database.searchStudent(userInput), true);
+            model = viewTable.getModel();
+            model.addTableModelListener(e -> {
+                validrow = validRow(selectedRow, model);
+                updateButton.setEnabled(validrow);
+            });
             resultFrame.add(viewTable,BorderLayout.CENTER);
             updateButton.setVisible(true);
             resultFrame.add(updateButton,BorderLayout.SOUTH);
@@ -89,6 +95,15 @@ public class UpdateGUI extends JPanel{
             resultFrame.getContentPane().removeAll();
             resultFrame.setLayout(new BorderLayout());
             viewTable = new ViewGUI(database.searchStudent(Integer.parseInt(userInput)), true);
+            model = viewTable.getModel();
+            model.addTableModelListener(e -> {
+                selectedRow = viewTable.getSelectedRow();
+                if(selectedRow != -1){
+                    validrow = validRow(selectedRow, model);
+                    updateButton.setEnabled(validrow);
+                }
+
+            });
             resultFrame.add(viewTable,BorderLayout.CENTER);
             updateButton.setVisible(true);
             resultFrame.add(updateButton,BorderLayout.SOUTH);
@@ -103,24 +118,14 @@ public class UpdateGUI extends JPanel{
 
     private void update(){
         selectedRow = viewTable.getSelectedRow();
-        updateButton.setVisible(true);
 
         if(selectedRow == -1)
-            JOptionPane.showMessageDialog(resultFrame, "Please select a student first!");
+            JOptionPane.showMessageDialog(resultFrame, "Please select a student first!", "Error", JOptionPane.ERROR_MESSAGE);
         else if (viewTable == null)
-            JOptionPane.showMessageDialog(resultFrame, "No students found!");
+            JOptionPane.showMessageDialog(resultFrame, "No students found!", "Error", JOptionPane.ERROR_MESSAGE);
         else{
-            DefaultTableModel model = viewTable.getModel();
-            
-            model.addTableModelListener(e -> {
-                validrow = validRow(selectedRow, model);
-                updateButton.setEnabled(validrow);
-            });
-            
-            //updateButton.setEnabled(validrow);
-
-            if(!validrow){
-                JOptionPane.showMessageDialog(resultFrame, "Can't update");
+            if(!validRow(selectedRow, model)){
+                JOptionPane.showMessageDialog(resultFrame, "Invalid data.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             int id = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
@@ -139,8 +144,7 @@ public class UpdateGUI extends JPanel{
                     resultFrame.dispose();
                 }
                 else 
-                    JOptionPane.showMessageDialog(resultFrame, "Update failed. Please try again.");
-            
+                    JOptionPane.showMessageDialog(resultFrame, "Update failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);            
             }
         }
     }
@@ -150,25 +154,25 @@ public class UpdateGUI extends JPanel{
         Object name = model.getValueAt(selectedRow, 1);
         String str = name.toString().trim();
         if (str.isEmpty()) {
-            JOptionPane.showMessageDialog(resultFrame, "Name cell Empty!");
+            JOptionPane.showMessageDialog(resultFrame, "Name cell Empty!", "Error", JOptionPane.ERROR_MESSAGE);
             isValid = false;
         }
         Object gender = model.getValueAt(selectedRow, 3);
         str = gender.toString().trim();
         if(str.isEmpty()){
-            JOptionPane.showMessageDialog(resultFrame, "Gender cell Empty!");
+            JOptionPane.showMessageDialog(resultFrame, "Gender cell Empty!", "Error", JOptionPane.ERROR_MESSAGE);
             isValid = false;
         }
         Object department = model.getValueAt(selectedRow, 4);
         str = department.toString().trim();
         if(str.isEmpty()){
-            JOptionPane.showMessageDialog(resultFrame, "Department cell Empty!");
+            JOptionPane.showMessageDialog(resultFrame, "Department cell Empty!", "Error", JOptionPane.ERROR_MESSAGE);
             isValid = false;
         }
         Object ageObject = model.getValueAt(selectedRow, 2);
         if(ageObject == null){
-            JOptionPane.showMessageDialog(resultFrame, "Age cell Empty!");
-           isValid = false;
+            JOptionPane.showMessageDialog(resultFrame, "Age cell Empty!", "Error", JOptionPane.ERROR_MESSAGE);
+            isValid = false;
         }
         else{
             str = ageObject.toString().trim();
@@ -177,13 +181,13 @@ public class UpdateGUI extends JPanel{
                 if(!valid.validateAge(age))
                     isValid = false;
             }catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(resultFrame, "Not valid");
+                JOptionPane.showMessageDialog(resultFrame, "Not valid", "Error", JOptionPane.ERROR_MESSAGE);
                 isValid = false;
             }
         }
         Object gpaObject = model.getValueAt(selectedRow, 5);
         if(gpaObject == null){
-            JOptionPane.showMessageDialog(resultFrame, "GPA cell Empty!");
+            JOptionPane.showMessageDialog(resultFrame, "GPA cell Empty!", "Error", JOptionPane.ERROR_MESSAGE);
             isValid = false;
         }
         else{
@@ -193,7 +197,7 @@ public class UpdateGUI extends JPanel{
                 if(!valid.validateGpa(gpa))
                     isValid = false;
             }catch(NumberFormatException e){
-                JOptionPane.showMessageDialog(resultFrame, "Not valid");
+                JOptionPane.showMessageDialog(resultFrame, "Not valid", "Error", JOptionPane.ERROR_MESSAGE);
                 isValid = false;
             }
         }
