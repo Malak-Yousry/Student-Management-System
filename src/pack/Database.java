@@ -114,7 +114,8 @@ public class Database extends Validations {
     
      // sorting methods
     public void sortById(){
-        records=readFromFile();
+        //added this line to constructor 
+        //records=readFromFile();
         for(int i = 0;i<records.size();i++){
             int index=i;
             for(int j=i+1;j<records.size();j++) {
@@ -129,22 +130,37 @@ public class Database extends Validations {
         }
         saveToFile();
     }
+    public void sortByGPA(){
+        for(int i = 0; i < records.size(); i++){
+            int index = i;
+            for(int j=i+1;j<records.size();j++) {
+                if(records.get(j).getGpa() < records.get(index).getGpa())
+                index = j;
+            }
+            if(index != i) {
+                StudentRecord temp = records.get(i);
+                records.set(i,records.get(index));
+                records.set(index,temp);
+            }
+        }
+        saveToFile();
+    }
     public void sortByName(){
-     records=readFromFile();
-    for(int i = 0;i<records.size();i++){
-       int index=i;
-       for(int j=i+1;j<records.size();j++) {
-        if(records.get(j).getFullName().compareToIgnoreCase(records.get(index).getFullName()) < 0)
-        index=j;
-          }
-    if(index!=i) {
-	StudentRecord temp = records.get(i);
-	records.set(i,records.get(index));
-	records.set(index,temp);
-		}
-     }
-    saveToFile();
-     }
+        //records=readFromFile();       //added this line to constructor 
+        for(int i = 0;i<records.size();i++){
+            int index=i;
+            for(int j=i+1;j<records.size();j++) {
+                if(records.get(j).getFullName().compareToIgnoreCase(records.get(index).getFullName()) < 0)
+                index=j;
+            }
+        if(index!=i) {
+            StudentRecord temp = records.get(i);
+            records.set(i,records.get(index));
+            records.set(index,temp);
+        }
+        }
+        saveToFile();
+    }
     // delete methods
     public boolean deleteStudentById(int studentId) {
     	records = readFromFile();
