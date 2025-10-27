@@ -11,7 +11,7 @@ public class DeleteGUIS extends javax.swing.JFrame {
   public DeleteGUIS() {
         initialise();
         loadStudentsFromFile(); 
-         debugInfo(); // Add this line for testing
+        /*  debugInfo(); // Add this line for testing*/
 
     }
 private void initialise() {
@@ -202,8 +202,9 @@ private void deleteSelectedStudent() {
         SwingUtilities.invokeLater(() -> {
             new DeleteGUIS().setVisible(true);
         });
-    }*/
-   /* public static void main(String[] args) {
+    }
+
+    public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
         System.out.println("=== Starting DeleteGUIS Test ===");
         
