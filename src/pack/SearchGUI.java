@@ -39,6 +39,7 @@ public class SearchGUI extends JPanel{
                 ArrayList<StudentRecord> record = new ArrayList<>();
                 if(valid.validateFullName(userInput)){
                     record = database.searchStudent(userInput);
+                    if(!record.isEmpty()) {
                     ViewGUI viewTable = new ViewGUI(record, false);
                     JFrame resultFrame = new JFrame("Search Results");
                     resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -46,10 +47,14 @@ public class SearchGUI extends JPanel{
                     resultFrame.setLocationRelativeTo(null);
                     resultFrame.add(viewTable);
                     resultFrame.setVisible(true);
+                    }
+                    else
+                    	JOptionPane.showMessageDialog(searchFrame, "No student found!");
                 }
                     
                 else if (userInput.matches("\\d+")){//else if(isNumber(userInput))    //
                     record = database.searchStudent(Integer.parseInt(userInput));
+                    if(!record.isEmpty()) {
                     ViewGUI viewTable = new ViewGUI(record, false);
                     JFrame resultFrame = new JFrame("Search Results");
                     resultFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -57,6 +62,9 @@ public class SearchGUI extends JPanel{
                     resultFrame.setLocationRelativeTo(null);
                     resultFrame.add(viewTable);
                     resultFrame.setVisible(true);
+                    }
+                    else
+                    	JOptionPane.showMessageDialog(searchFrame, "No student found!");
                 }
                 else if(userInput.length() == 0)
                     JOptionPane.showMessageDialog(searchFrame, "Empty text!");

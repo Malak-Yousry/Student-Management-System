@@ -14,13 +14,14 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class LoginGUI extends JPanel {
-
+public class LoginGUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private JTextField txtUserName;
 	private JTextField txtPassword;
@@ -30,18 +31,24 @@ public class LoginGUI extends JPanel {
 	 * Create the panel.
 	 */
 	public LoginGUI() {
-		setBackground(SystemColor.controlHighlight);
-		setLayout(new BorderLayout(20,20));
+		
+		setTitle("Login");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(400,300);
+		setLocationRelativeTo(null);
+		//setContentPane(HomePage);
+        getContentPane().setBackground(SystemColor.controlHighlight);
+        getContentPane().setLayout(new BorderLayout(20,20));
 		//setBackground(new Color(240,240,240));
 		
 		JLabel lblTitle = new JLabel("Login",SwingConstants.CENTER);
 		lblTitle.setFont(new Font("Verdana", Font.PLAIN, 35));
 		lblTitle.setForeground(Color.DARK_GRAY);
-		add(lblTitle,BorderLayout.NORTH);
+		getContentPane().add(lblTitle,BorderLayout.NORTH);
 		
-	    JPanel panel = new JPanel(new GridLayout(6,2,15,15));
+	    JPanel panel = new JPanel(new GridLayout(2,2,20,20));
 	    panel.setBackground(SystemColor.controlHighlight);
-	    panel.setBorder(BorderFactory.createEmptyBorder(20,40,20,40));
+	    panel.setBorder(BorderFactory.createEmptyBorder(40,40,40,40));
 	    
 
 	    
@@ -67,13 +74,25 @@ public class LoginGUI extends JPanel {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,20,10));
 		buttonPanel.setBackground(SystemColor.controlHighlight);
 		
-		JButton btnNewButton = new JButton("Login in");
+		JButton btnNewButton = new JButton("Login");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String userName=txtUserName.getText().trim();
 				String password=txtPassword.getText().trim();
 				Validations user=new Validations();
-				user.validateUser(userName,password);
+				boolean valid = user.validateUser(userName,password);
+	
+				if(valid) {
+					JOptionPane.showMessageDialog(null,"Login Successfully");
+					dispose();
+					HomePage home = new HomePage();
+					home.setVisible(true);
+					
+					
+				}
+				else {
+					JOptionPane.showMessageDialog(null,"Incorrect UserName or Password");
+				}
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -81,10 +100,10 @@ public class LoginGUI extends JPanel {
 		buttonPanel.add(btnNewButton);
 		
 
+		getContentPane().add(buttonPanel,BorderLayout.SOUTH);
 		
-		
-        add(panel,BorderLayout.CENTER);
-        add(buttonPanel,BorderLayout.SOUTH);
+		getContentPane().add(panel,BorderLayout.CENTER);
+       // add(buttonPanel,BorderLayout.SOUTH);
         
 	
 

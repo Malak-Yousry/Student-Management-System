@@ -32,7 +32,7 @@ public class Validations {
 	}
 	//To ensure that the age is positive
 	public boolean validateAge(int age) {
-		 if(age <= 0)
+		 if(age <=16 || age>=35)
 			 return false;
 		 else 
 			 return true;
@@ -58,7 +58,7 @@ public class Validations {
 		 String pass =parts[1];
 		
 		 if(user.equals(userName) && pass.equals(password)) {
-			 JOptionPane.showMessageDialog(null,"Login Successfully");
+		
 		 return true;
 		 }
 		 }
@@ -67,7 +67,7 @@ public class Validations {
 			System.out.println("An error occurred");
 			e.printStackTrace();
 				}
-	     JOptionPane.showMessageDialog(null,"Incorrect UserName or Password");
+	  
 		 return false;
 	          
 	}

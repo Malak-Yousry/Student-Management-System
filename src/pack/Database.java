@@ -23,20 +23,22 @@ public class Database extends Validations {
    //constructor 
    public Database(){
         records = readFromFile();
-    }
+	   }
    //search methods
     public ArrayList<StudentRecord> searchStudent(String name){
         ArrayList<StudentRecord> result = new ArrayList<>();
         records = this.readFromFile();
-        for(int i = 0; i < records.size(); i++)
-            if(records.get(i).getFullName().equalsIgnoreCase(name))
+        for(int i = 0; i < records.size(); i++) {
+            if(records.get(i).getFullName().equalsIgnoreCase(name)) {
                 result.add(records.get(i));
+            }
+        }
         return result;
     }
     //overload
     public ArrayList<StudentRecord> searchStudent(int id){
         ArrayList<StudentRecord> result = new ArrayList<>();
-        records = this.readFromFile();
+       // records = this.readFromFile();
         for(int i = 0; i < records.size(); i++)
             if(records.get(i).getStudentID() == id)
                 result.add(records.get(i));
@@ -74,7 +76,7 @@ public class Database extends Validations {
 		}
 	}
 	catch(FileNotFoundException e) {
-		System.out.println("An error occurred");
+		JOptionPane.showMessageDialog(null,"An error occurred");
 		e.printStackTrace();
 			}
             return records;
@@ -83,11 +85,11 @@ public class Database extends Validations {
     public void saveToFile() {
 		 
 		try(FileWriter writer = new FileWriter(new File(FILE_NAME))){
-			for(int i = 0; i < records.size(); i++) {
-			writer.write(records.get(i).lineRepresentation() + "\n");
+			for(StudentRecord r : records) {
+			writer.write(r.lineRepresentation() + "\n");
 		    }
         }catch(IOException e) {
-			System.out.println("An error occurred");
+			JOptionPane.showMessageDialog(null,"An error occurred");
 			e.printStackTrace();
 		}
 	}
@@ -144,46 +146,22 @@ public class Database extends Validations {
     saveToFile();
      }
     // delete methods
-    public boolean deleteStudentById(String studentId, boolean confirmDeletion) {
-        List<String> records = new ArrayList<>();
-        boolean found = false;
+    public boolean deleteStudentById(int studentId) {
+    	records = readFromFile();
+    	
+          for (int i = 0; i < records.size(); i++) {
+              if (records.get(i).getStudentID() == studentId) {
+                  records.remove(i);
+                  saveToFile();
+                  return true;
+              }
+          }
+          return false;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.startsWith(studentId + ",")) {
-                    found = true;
-                    if (!confirmDeletion) {
-                        records.add(line); 
-                    }
-                    continue; 
-                }
-                records.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        if (!found) {
-            return false; 
-        }
-
-
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
-            for (String s : records) {
-                bw.write(s);
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            return false;
-        }
-
-        return confirmDeletion;
     }
 // add records method
 	 public void addStudent(String fullName,int age,String gender,String departement,float gpa){
-	    records=readFromFile();
+	
 		  if(!validateFullName(fullName)) {
 			  JOptionPane.showMessageDialog(null,"Please Enter Your FullName!!");
 			return;  
@@ -199,24 +177,27 @@ public class Database extends Validations {
 			  return;
 		  }
 	
-		  if((searchStudent(fullName)) != null) {
+		  if(!searchStudent(fullName).isEmpty()) {
 			  JOptionPane.showMessageDialog(null,"Student already exists!");
 			  return;
 			  }
-		 int studentID= generateID();
-			 StudentRecord student = new   StudentRecord (studentID,fullName,age,gender,departement,gpa);
+		  else {
+			int studentID= generateID();
+			StudentRecord student = new StudentRecord (studentID,fullName,age,gender,departement,gpa);
 		 
 	       records.add(student);
 		   saveToFile();
+		   System.out.println("Workinggg");
+		   JOptionPane.showMessageDialog(null,"Student Added Successfully!!");
 		   
 		   }
 		  
-
+	 }
 	 public int generateID() {
 		 int id ;
 		 do{ 
 			 id = (int)((Math.random()*9000)+1000);
-	 }while(searchStudent(id) != null) ;
+	 }while(!(searchStudent(id)).isEmpty()) ;
 			
 		 return id;
 	}
