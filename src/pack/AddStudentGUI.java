@@ -84,13 +84,26 @@ public class AddStudentGUI extends JPanel {
 		JButton btnNewButton = new JButton("Add Student");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				boolean flag=true;
+				int age=0;
+				float gpa=0;
 				String fullName=txtStudentFullName.getText().trim();
-				int age=Integer.parseInt(txtAge.getText().trim());
+				if(txtAge.getText().equals("")) 
+				{
+					JOptionPane.showMessageDialog(null,"Enter Age,Please!");
+					flag = false;
+				}
+				else{age=Integer.parseInt(txtAge.getText().trim());}
 				String gender=(String)genderBox.getSelectedItem();
 				String department=(String)departementBox.getSelectedItem();
-				float gpa=Float.parseFloat(txtGpa.getText().trim());
+				if(txtGpa.getText().equals("")) 
+				{
+					JOptionPane.showMessageDialog(null,"Enter GPA,Please!");
+					flag = false;
+				}
+				else {gpa=Float.parseFloat(txtGpa.getText().trim());}
 				Database newStudent=new Database();
-				newStudent.addStudent(fullName, age, gender, department, gpa);
+				if(flag) newStudent.addStudent(fullName, age, gender, department, gpa);
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 15));

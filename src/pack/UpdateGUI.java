@@ -155,9 +155,9 @@ public class UpdateGUI extends JPanel{
         Object gender = model.getValueAt(selectedRow, 3);
         str = gender.toString().trim();
         if(str.isEmpty()){
-            JOptionPane.showMessageDialog(resultFrame, "Gender cell Empty!", "Error", JOptionPane.ERROR_MESSAGE);
-            isValid = false;
-        }
+           JOptionPane.showMessageDialog(resultFrame, "Gender cell Empty!", "Error", JOptionPane.ERROR_MESSAGE);
+          isValid = false;
+       }
         if(!valid.validateGender(str)) {
         	isValid = false;
         	JOptionPane.showMessageDialog(resultFrame, "Invalid Gender", "Error", JOptionPane.ERROR_MESSAGE);

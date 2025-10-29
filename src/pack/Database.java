@@ -203,7 +203,6 @@ public class Database extends Validations {
 		 
 	       records.add(student);
 		   saveToFile();
-		   System.out.println("Workinggg");
 		   JOptionPane.showMessageDialog(null,"Student Added Successfully!!");
 		   
 		   }
@@ -212,7 +211,7 @@ public class Database extends Validations {
 	 public int generateID() {
 		 int id ;
 		 do{ 
-			 id = (int)((Math.random()*9000)+1000);
+			 id = (int)((Math.random()*2000)+1000);
 	 }while(!(searchStudent(id)).isEmpty()) ;
 			
 		 return id;

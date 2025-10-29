@@ -37,9 +37,6 @@ public class ViewGUI extends JPanel {
 		Class[] columnTypes = new Class[] {
 			Integer.class, String.class, Integer.class, String.class, String.class, Float.class
 					};
-		public Class<?> getColumnClass(int columnIndex){
-			return columnTypes[columnIndex];
-		}
 		public boolean isCellEditable(int row,int column) {
 			if(column != 0)
 				return editable;

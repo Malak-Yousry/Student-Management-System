@@ -32,7 +32,7 @@ public class SearchGUI extends JPanel{
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e){
-                String userInput = text.getText();
+                String userInput = text.getText().trim();
                 ArrayList<StudentRecord> record = new ArrayList<>();
                 if(valid.validateFullName(userInput))
                     record = database.searchStudent(userInput);

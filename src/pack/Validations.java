@@ -14,10 +14,6 @@ public class Validations {
 	public Validations() {
 	}
 	
-	public Validations(String userName, String password) {
-		this.userName = userName;
-		this.password = password;
-	}
 	//To ensure that at least 3 names are entered
 	public boolean validateFullName(String fullName) {
 	     if(fullName == null){
